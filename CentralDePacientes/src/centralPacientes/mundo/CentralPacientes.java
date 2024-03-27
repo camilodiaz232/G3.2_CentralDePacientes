@@ -72,8 +72,16 @@ public class CentralPacientes {
      */
     public void agregarPacienteAlComienzo(Paciente pac) {
         // TODO: Realiar el m�todo que agrega al principio
-
-        pacientes.add(0,pac);
+        Integer indicePacienteConElCodigoDado = null;
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente pacienteActual = pacientes.get(i);
+            if(pacienteActual.darCodigo() == pac.darCodigo()){
+                indicePacienteConElCodigoDado = i;
+            }
+        }
+        if(indicePacienteConElCodigoDado == null){
+            pacientes.add(0, pac);
+        }
 
     }
 
@@ -85,24 +93,46 @@ public class CentralPacientes {
      */
     public void agregarPacienteAlFinal(Paciente pac) {
         // TODO: Agragar un paciente al final de la lista
-      //   pacientes.add(pac);
+        pacientes.add(pacientes.size(),pac);
     }
 
     /**
      * Adiciona un paciente a la lista de pacientes antes del paciente con el c�digo especificado. <br>
      */
     public void agregarPacienteAntesDe(int cod, Paciente pac) throws NoExisteException {
-        // TODO: Agrega un paciente despu�s del paciente con el c�digo dado
+        // TODO: Agrega un paciente antes del paciente con el c�digo dado
+        Integer indicePacienteConElCodigoDado = null;
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente pacienteActual = pacientes.get(i);
+            if(pacienteActual.darCodigo() == cod){
+                indicePacienteConElCodigoDado = i;
+            }
+        }
+        if(indicePacienteConElCodigoDado != null){
+            pacientes.add(indicePacienteConElCodigoDado, pac);
+        } else {
+            throw new NoExisteException(cod);
+        }
 
-        pacientes.add(cod, pac);
     }
 
     /**
      * Adiciona un paciente a la lista de pacientes despu�s del paciente con el c�digo especificado.
      */
     public void agregarPacienteDespuesDe(int cod, Paciente pac) throws NoExisteException {
-        // TODO: Agrega un paciente despu�s del paciente con el c�digo cod
-        pacientes.add((cod+1), pac);
+        // TODO: Agrega un paciente despues del paciente con el c�digo cod
+        Integer indicePacienteConElCodigoDado = null;
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente pacienteActual = pacientes.get(i);
+            if(pacienteActual.darCodigo() == cod){
+                indicePacienteConElCodigoDado = i;
+            }
+        }
+        if(indicePacienteConElCodigoDado != null){
+            pacientes.add(indicePacienteConElCodigoDado+1, pac);
+        } else {
+            throw new NoExisteException(cod);
+        }
     }
 
     /**
@@ -110,8 +140,13 @@ public class CentralPacientes {
      */
     public Paciente localizar(int codigo) {
         // TODO: Completar el m�todo
-
-        return pacientes.get(codigo);
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente pacienteActual = pacientes.get(i);
+            if(pacienteActual.darCodigo() == codigo){
+                return pacienteActual;
+            }
+        }
+        return null;//no se encontró el paciente con el código recibido
     }
 
     /**
@@ -119,7 +154,18 @@ public class CentralPacientes {
      */
     public void eliminarPaciente(int cod) throws NoExisteException {
         // TODO: Si no existe el paciente con el c�digo dado, genera la excepci�n
-        pacientes.remove(cod);
+        Integer indicePacienteConElCodigoDado = null;
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente pacienteActual = pacientes.get(i);
+            if(pacienteActual.darCodigo() == cod){
+                indicePacienteConElCodigoDado = i;
+            }
+        }
+        if(indicePacienteConElCodigoDado != null){
+            pacientes.remove(indicePacienteConElCodigoDado);
+        } else {
+            throw new NoExisteException(cod);
+        }
     }
 
     /**
@@ -154,7 +200,7 @@ public class CentralPacientes {
         // TODO: Completar
         int hombres = 0;
         for(int i = 0; i < pacientes.size();i ++){
-            if (pacientes.get(i).darSexo()==(1)){
+            if (pacientes.get(i).darSexo()==Paciente.HOMBRE){
                 hombres++;
             }
         }
@@ -169,11 +215,11 @@ public class CentralPacientes {
         // TODO: Completar
         int mujeres = 0;
         for(int i = 0; i < pacientes.size();i ++){
-            if (pacientes.get(i).darSexo()==(2)){
+            if (pacientes.get(i).darSexo()==Paciente.MUJER){
                 mujeres++;
             }
         }
-        return 0;
+        return mujeres;
     }
 
     /**
